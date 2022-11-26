@@ -61,7 +61,7 @@ def main(rowsNumbers, grade):
     document.save('小学生口算题.docx')
     os.startfile("小学生口算题.docx")
 
-
+# ok
 if __name__ == '__main__':
     app = tkinter.Tk()
     app.title('小学口算题生成器')
