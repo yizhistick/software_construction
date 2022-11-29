@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 import threading
-
+from 草稿2 import Operation
 sg.theme('DarkAmber')
 
 
@@ -11,8 +11,8 @@ def MainPage():
               [sg.Text('请选择下面一个操作：')],
               [sg.Button('限时练习')],
               [sg.Button('易错题练习')],
-              [sg.Button('导入习题')],
-              [sg.Button('导出习题')],
+              [sg.Button('导入题目')],
+              [sg.Button('导出题目')],
               [sg.Button('ok', ), sg.Button('Cancel')]]
 
     window = sg.Window('windows', layout)
@@ -20,9 +20,44 @@ def MainPage():
         event, values = window.read()
         if event == sg.WIN_CLOSED or event == 'Cancel':
             break
-        print('you entered', values[1])
+        elif event == '导入题目':
+            ImportPage()
+        print('you entered', values)
 
     window.close()
+
+
+def time_limitPage(list: list):
+    layout = []
+    print(list)
+
+
+def exercisePage(list: list):
+    layout = []
+
+
+def mistakesPage():
+    layout = []
+
+
+def ImportPage():
+    layout = [[sg.Input(), sg.FileBrowse("选择文件")],
+              [sg.Button("开始导入")]]
+    window = sg.Window('window', layout)
+    event, values = window.read()
+    if event == "开始导入":
+        window.close()
+        time_limitPage([i for i in range(10)])
+
+
+def ExportPage():
+    layout = [[sg.Input(), sg.FileBrowse("选择文件夹")],
+              [sg.Button("开始导出")]]
+    window = sg.Window('window', layout)
+    event, values = window.read()
+    if event == "开始导出":
+        window.close()
+        time_limitPage([i for i in range(10)])
 
 
 def LoginPage():
@@ -45,3 +80,4 @@ def LoginPage():
 
 if __name__ == '__main__':
     LoginPage()
+    Operation.create()
