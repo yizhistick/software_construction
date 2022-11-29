@@ -1,6 +1,5 @@
 import random
 import os
-import tkinter
 import tkinter.ttk
 from docx.shared import Pt
 from docx import Document
@@ -61,7 +60,8 @@ def main(rowsNumbers, grade):
     document.save('小学生口算题.docx')
     os.startfile("小学生口算题.docx")
 
-# ok
+
+# 界面
 if __name__ == '__main__':
     app = tkinter.Tk()
     app.title('小学口算题生成器')
@@ -74,7 +74,7 @@ if __name__ == '__main__':
 
     labelGrade = tkinter.Label(app, text='Grade:', justify=tkinter.RIGHT, width=50)
     labelGrade.place(x=130, y=40, width=50, height=20)
-    comboGrade = tkinter.ttk.Combobox(app, values=(1, 2, 3, 4, 5,6), width=50)
+    comboGrade = tkinter.ttk.Combobox(app, values=(1, 2, 3, 4, 5, 6), width=50)
     comboGrade.place(x=200, y=40, width=50, height=20)
 
 
