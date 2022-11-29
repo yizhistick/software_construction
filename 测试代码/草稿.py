@@ -15,7 +15,7 @@ def MainPage():
               [sg.Button('导出题目')],
               [sg.Button('ok', ), sg.Button('Cancel')]]
 
-    window = sg.Window('windows', layout)
+    window = sg.Window('windows', layout,element_justification="center")
     while True:
         event, values = window.read()
         if event == sg.WIN_CLOSED or event == 'Cancel':
@@ -67,7 +67,7 @@ def LoginPage():
               [sg.Button('登录')],
               [sg.Button('注册')],
               ]
-    window = sg.Window('windows', layout)
+    window = sg.Window('windows', layout,element_justification="center")
 
     event, values = window.read()
     if event == sg.WIN_CLOSED:
