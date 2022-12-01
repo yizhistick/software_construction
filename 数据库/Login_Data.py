@@ -1,49 +1,62 @@
-def DataInitialize():
-    # !/usr/bin/python/数据库/
+import sqlite3
+import PySimpleGUI as sg
+from 数据库.Base_Data import ConnData
 
-    import sqlite3
 
-    conn = sqlite3.connect('test.db')
-    print("数据库打开成功")
-    c = conn.cursor()
-    c.execute('''CREATE TABLE Users
-           (ACCOUNT CHAR(20) PRIMARY KEY     NOT NULL,
-           PASSWORD           CHAR(20)    NOT NULL);''')
-    print("数据表创建成功")
-    conn.commit()
+# 判断是否存在对应用户
+def IfExist(account=str):
+    c, conn = ConnData()
+    cusor = conn.execute(f"SELECT account, Password from Users where account={account}")
+    if len(list(cusor)) == 1:
+        return True
+    else:
+        return False
+
+
+# 注册事务
+def register_affair(account=str, password=str, password_ok=str):
+    if len(account) == 0 or len(password) == 0:
+        sg.popup_error("账号和密码不可以为空")
+        return
+    if password != password_ok:
+        sg.popup_error("两次密码输入不一致！")
+        return
+    # 连接数据库
+    c, conn = ConnData()
+    if IfExist(account):
+        sg.popup_error("此账号已经有人注册!")
+    else:
+        c.execute(f"INSERT INTO Users (ACCOUNT,PASSWORD) \
+              VALUES ({account},{password})")
+        sg.popup("注册成功！")
+        conn.commit()
+    # 断开连接
     conn.close()
 
 
-def Insert():
-    # !/usr/bin/python/数据库/
+# 登录事务
+def Login_affair(cin_account=str, cin_password=str):
+    c, conn = ConnData()
+    if len(cin_account) == 0 or len(cin_password) == 0:
+        sg.popup_error("账号和密码不可以为空")
+        return
+    if IfExist(cin_account):
+        cusor = conn.execute(f"SELECT account, Password  from Users where account={cin_account}")
+        password = list(cusor)[0][1]
+        print(password)
+        if password == cin_password:
+            return True
+        else:
+            sg.popup_error("密码输入不正确")
+            return False
+    else:
+        sg.popup_error("不存在此用户")
+        return False
 
-    import sqlite3
-
-    conn = sqlite3.connect('test.db')
-    c = conn.cursor()
-    print("数据库打开成功")
-
-    c.execute("INSERT INTO Users (ACCOUNT,PASSWORD) \
-          VALUES (2360784351,123456)")
-
-    c.execute("INSERT INTO Users (ACCOUNT,PASSWORD) \
-          VALUES (2669107795,345612)")
-    c.execute("INSERT INTO Users (ACCOUNT,PASSWORD) \
-          VALUES (2123456789,345612)")
-    c.execute("INSERT INTO Users (ACCOUNT,PASSWORD) \
-          VALUES (3567891234,456123)")
-
-    conn.commit()
-    print("数据插入成功")
-    conn.close()
-
-
-def register_affair():
-    pass
-
-def Login_affair():
-    pass
 
 if __name__ == '__main__':
     # DataInitialize()
-    Insert()
+    # Insert()
+    # Query()
+
+    pass
