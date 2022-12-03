@@ -23,6 +23,7 @@ def LoginPage():
             account = values[0]
             password = values[1]
             if Login_affair(account, password):
+                Current_Account = account
                 window.close()
                 MainPage()
                 break
@@ -62,6 +63,8 @@ def mistakesPage():
     layout = []
 
 
+
+
+
 if __name__ == '__main__':
-    ls = RandomGenerate(5, 100)
-    print(ls)
+    pass

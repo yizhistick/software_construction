@@ -50,5 +50,10 @@ class Operation:
             Exercises.append(r)
         return Exercises
 
-    def Correct(self,ercises_dict:dict):
-        return list
+    def correct(Exercises: dict):
+        for question, user_answer in dict.items():
+            if eval(question) != user_answer:
+                Exercises[question] = False
+            else:
+                Exercises[question] = True
+        return Exercises
