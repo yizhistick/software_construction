@@ -62,9 +62,6 @@ def mistakesPage():
     layout = []
 
 
-
-
-
 if __name__ == '__main__':
     ls = RandomGenerate(5, 100)
     print(ls)

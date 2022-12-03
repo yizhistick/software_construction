@@ -1,5 +1,8 @@
+import os
+from random import random
+
 import PySimpleGUI as sg
-import threading
+from docx import Document
 from 草稿2 import Operation
 import docx
 
@@ -88,6 +91,58 @@ def ExportPage():
     if event == "开始导出":
         window.close()
         time_limitPage([i for i in range(10)])
+        if grade < 3:
+            operators = '+-'
+            Max = 20
+        elif grade <= 4:
+            operators = '＋－×÷'
+            Max = 100
+        elif grade == 5:
+            operators = '＋－×÷('
+            Max = 100
+        document = Document()
+        table = document.add_table(rows=rowsNumbers, cols=columnsNumber)
+        table.style.font.name = '微软雅黑'
+        table.style.font.size = Pt(10)
+        for row in range(rowsNumbers):
+            for col in range(columnsNumber):
+                first = random.randint(1, Max)
+                second = random.randint(1, Max)
+                operator = random.choice(operators)
+                if operator != '(':  # 不是五年级
+                    if operator == '-' or '÷':
+                        if first < second:
+                            first, second = second, first
+                    r = str(first).ljust(2, ' ') + ' ' + operator + str(second).ljust(2, ' ') + '='
+
+                else:  # 是五年级
+                    third = random.randint(1, 100)
+                    while True:
+                        o1 = random.choice(operators)
+                        o2 = random.choice(operators)
+                        if o1 != '(' and o2 != '(':
+                            break
+                    # 考虑括号的口算题
+                    r2 = random.randint(1, 100)
+                    if r2 > 50:
+                        if o2 == '-':
+                            if second < third:
+                                second, third = third, second
+                        r = str(first).ljust(2, ' ') + o1 + '(' + str(second).ljust(2, ' ') + o2 + str(third).ljust(2,
+                                                                                                                    ' ') + ')='
+                    else:
+                        if o1 == '-':
+                            if first < second:
+                                first, second = second, first
+                        r = '(' + str(first).ljust(2, ' ') + o1 + str(second).ljust(2, ' ') + ')' + o2 + str(
+                            third).ljust(2,
+                                         ' ') + '='
+
+                cell = table.cell(row, col)
+                cell.text = r
+
+        document.save(values[0]+'/小学生口算题.docx')
+        os.startfile(values[0]+"/小学生口算题.docx")
 
 
 def LoginPage():

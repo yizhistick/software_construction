@@ -50,5 +50,5 @@ class Operation:
             Exercises.append(r)
         return Exercises
 
-    def correct(self):
+    def Correct(self,ercises_dict:dict):
         return list

@@ -1,25 +1,41 @@
 import PySimpleGUI as sg
+import Tool.Operation as op
+import docx
 from 数据库 import *
 
 
+# 导入习题
 def ImportPage():
-    layout = [[sg.Input(), sg.FileBrowse("选择文件")],
+    layout = [[sg.Input(), sg.FileBrowse("选择文件", file_types=(("word File", "*.docx"),))],
               [sg.Button("开始导入")]]
     window = sg.Window('window', layout)
     event, values = window.read()
     if event == "开始导入":
         window.close()
-        time_limitPage([i for i in range(10)])
+        print(values[0])
+        file = docx.Document(values[0])
+        exercises_list = []
+        for table in file.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    exercises_list.append(cell.text)
+        exercisePage(exercises_list)
 
 
-def ExportPage():
-    layout = [[sg.Input(), sg.FileBrowse("选择文件夹")],
-              [sg.Button("开始导出")]]
+def ExportPage(exercises_list: list, errors_list: list):
+    layout = [[sg.Input(), sg.FolderBrowse("选择文件夹")],
+              [sg.Button("导出习题"), sg.Button("导出错题")]]
     window = sg.Window('window', layout)
     event, values = window.read()
-    if event == "开始导出":
+    if event == "导出错题":
+        if len(exercises_list) == 0:
+            sg.Popup("当前无错题", title='test', custom_text=('确定', '取消'))
+        op.Operation.Create()
         window.close()
-        time_limitPage([i for i in range(10)])
+
+    if event == "导出当前习题":
+        op.Operation.Create()
+        window.close()
 
 
 def time_limitPage(list: list):
@@ -27,5 +43,27 @@ def time_limitPage(list: list):
     print(list)
 
 
-def exercisePage(list: list):
-    layout = []
+# 练习习题
+def exercisePage(exercises_list: list):
+    list_box = [
+        [sg.Text(exercises_list[i], size=(13, 0)), sg.Input(size=(10, 200)),
+         sg.Text(exercises_list[i + 1], size=(13, 0)), sg.Input(size=(10, 200))
+         ] for i in range(0, len(exercises_list), 2)]
+
+    layout = [[sg.Column(list_box, size=(500, 600), scrollable=True,
+                         vertical_scroll_only=True, key='test')],
+              [sg.Button("提交"), sg.Button("导出")]]
+    window = sg.Window('window', layout, element_justification="center")
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED or event == 'Cancel':
+            break
+        if event == '提交':
+            exercises_dic = {}
+            result = list(values.values())
+            for i in range(len(result)):
+                exercises_dic[exercises_list[i]] = result[i]
+            exercises_dic1 = op.Operation.Correct(exercises_dic)
+        if event == '导出':
+            window.close()
+            ExportPage(exercises_list, [])
