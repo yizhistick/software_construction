@@ -1,6 +1,9 @@
+import random
+
 import PySimpleGUI as sg
 from 数据库 import *
 from Main import *
+from 数据库.Login_Data import Login_affair
 
 
 def LoginPage():
@@ -19,7 +22,7 @@ def LoginPage():
         elif event == '登录':
             account = values[0]
             password = values[1]
-            if Data.Login_affair(account, password):
+            if Login_affair(account, password):
                 window.close()
                 MainPage()
                 break
@@ -57,3 +60,11 @@ def registerPage():
 
 def mistakesPage():
     layout = []
+
+
+
+
+
+if __name__ == '__main__':
+    ls = RandomGenerate(5, 100)
+    print(ls)
