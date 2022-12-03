@@ -58,5 +58,4 @@ if __name__ == '__main__':
     # DataInitialize()
     # Insert()
     # Query()
-
     pass
