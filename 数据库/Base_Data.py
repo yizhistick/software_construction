@@ -3,7 +3,7 @@ import sqlite3
 
 
 def ConnData():
-    conn = sqlite3.connect('D:\ProjectAll\Python\软件构造实验\数据库\Exercise_db')
+    conn = sqlite3.connect('../数据库/Exercise_db')
     print("数据库打开成功")
     c = conn.cursor()
     return c, conn
