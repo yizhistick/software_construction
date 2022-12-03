@@ -66,5 +66,5 @@ def mistakesPage():
 
 
 if __name__ == '__main__':
-    ls = RandomGenerate(5, 100)
+    pass
     print(ls)
