@@ -70,6 +70,7 @@ def exercisePage(exercises_list: list):
             break
         if event == '提交':
             exercises_dict = {}
+            sg.popupOKCANCEL("确认提交吗")
             result = list(values.values())
             for i in range(len(result)):
                 exercises_dict[exercises_list[i]] = result[i]
@@ -79,5 +80,6 @@ def exercisePage(exercises_list: list):
             print(exercises_dict)
 
         if event == '导出':
-            window.close()
+            window.disappear()
             ExportPage(exercises_list, errors_list=[])
+            window.close()
