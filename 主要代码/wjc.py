@@ -4,7 +4,7 @@ import PySimpleGUI as sg
 from 数据库 import *
 from Main import *
 from 数据库.Login_Data import Login_affair
-
+import Tool.Current_variate as Share
 
 def LoginPage():
     layout = [[sg.Text('小学生口算题')],
@@ -23,7 +23,7 @@ def LoginPage():
             account = values[0]
             password = values[1]
             if Login_affair(account, password):
-                Current_Account = account
+                Share.Current_Account = account
                 window.close()
                 MainPage()
                 break

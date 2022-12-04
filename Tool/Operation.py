@@ -1,8 +1,10 @@
 import random
+import 数据库.Exercise_Data as Data
+import Current_variate as CV
 
 
 class Operation:
-    def Create(grade=int, quantity=int):
+    def Create(self, grade=int, quantity=int):
         global Max, operators  # 题目中数字的最大值，运算符
         Exercises = []
         # 年级判断
@@ -50,10 +52,11 @@ class Operation:
             Exercises.append(r)
         return Exercises
 
-    def correct(Exercises: dict):
-        for question, user_answer in dict.items():
-            if eval(question) != user_answer:
-                Exercises[question] = False
+    def correct(self, exercises: dict):
+        for problem, user_answer in dict.items():
+            if eval(problem) != user_answer:
+                exercises[problem] = False
+                Data.Deposit(problem=problem, answer=eval(problem), account=CV.Current_Account)
             else:
-                Exercises[question] = True
-        return Exercises
+                exercises[problem] = True
+        return exercises
