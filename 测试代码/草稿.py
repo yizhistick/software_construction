@@ -1,5 +1,8 @@
+import os
+from random import random
+
 import PySimpleGUI as sg
-import threading
+from docx import Document
 from 草稿2 import Operation
 import docx
 
@@ -85,9 +88,6 @@ def ExportPage():
               [sg.Button("开始导出")]]
     window = sg.Window('window', layout)
     event, values = window.read()
-    if event == "开始导出":
-        window.close()
-        time_limitPage([i for i in range(10)])
 
 
 def LoginPage():

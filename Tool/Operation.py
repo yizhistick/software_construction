@@ -1,10 +1,12 @@
+import os
 import random
-import 数据库.Exercise_Data as Data
-import Current_variate as CV
+
+from docx import Document
+from docx.shared import Pt
 
 
 class Operation:
-    def Create(self, grade=int, quantity=int):
+    def Create(grade=int, quantity=int):
         global Max, operators  # 题目中数字的最大值，运算符
         Exercises = []
         # 年级判断
@@ -52,11 +54,26 @@ class Operation:
             Exercises.append(r)
         return Exercises
 
-    def correct(self, exercises: dict):
-        for problem, user_answer in dict.items():
-            if eval(problem) != user_answer:
-                exercises[problem] = False
-                Data.Deposit(problem=problem, answer=eval(problem), account=CV.Current_Account)
+    def correct(Exercises: dict):
+        for question, user_answer in Exercises.items():
+            if str(eval(question)) != user_answer:
+                Exercises[question] = False
             else:
-                exercises[problem] = True
-        return exercises
+                Exercises[question] = True
+        return Exercises
+
+    def output(rowsNumbers: int, templist: list, path: str):
+        columnsNumber = 4
+        document = Document()
+        table = document.add_table(rows=rowsNumbers, cols=columnsNumber)
+        table.style.font.name = '微软雅黑'
+        table.style.font.size = Pt(10)
+        for row in range(rowsNumbers):
+            for col in range(columnsNumber):
+                cell = table.cell(row, col)
+                cell.text = templist
+        document.save(path + '/小学生口算题.docx')
+        os.startfile(path + "/小学生口算题.docx")
+
+# if __name__ == '__main__':
+#     output()

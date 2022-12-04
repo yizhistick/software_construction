@@ -1,7 +1,6 @@
-import PySimpleGUI as sg
-import 数据库.Login_Data as Data
 from wjc import *
 from zt import *
+import Tool.Operation as op
 
 sg.theme('DarkAmber')
 
@@ -15,7 +14,7 @@ def MainPage():
               [sg.Button('易错题练习', size=20)],
               [sg.Button('导入题目', size=20)],
               [sg.Button('导出题目', size=20)],
-              [sg.Button('开始随机生成题目', ), sg.Button('退出')]]
+              [sg.Button('练习', ), sg.Button('退出')]]
 
     window = sg.Window('windows', layout, element_justification="center")
     while True:
@@ -23,12 +22,14 @@ def MainPage():
         if event == sg.WIN_CLOSED or event == '退出':
             break
         elif event == '限时练习':
+            exercisePage(op.Operation.Create(values[0], values[1]))
             pass
         elif event == '易错题':
             pass
         elif event == '导入题目':
             ImportPage()
         elif event == '导出题目':
+            ExportPage(op.Operation.Create(values[0], values[1]), errors_list=[])
             pass
         elif event == '开始随机生成题目':
             pass
