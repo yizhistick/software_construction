@@ -67,15 +67,24 @@ class Operation:
     def output(rowsNumbers: int, templist: list, path: str):
         columnsNumber = 4
         document = Document()
+        if rowsNumbers/4 != int(rowsNumbers/4):
+            rowsNumbers = int(rowsNumbers/4) + 1
+        else:
+            rowsNumbers = int(rowsNumbers/4)
         table = document.add_table(rows=rowsNumbers, cols=columnsNumber)
         table.style.font.name = '微软雅黑'
         table.style.font.size = Pt(10)
         for row in range(rowsNumbers):
             for col in range(columnsNumber):
+                if row * 4 + col >= len(templist):
+                    break
                 cell = table.cell(row, col)
-                cell.text = templist
-        document.save(path + '/小学生口算题.docx')
-        os.startfile(path + "/小学生口算题.docx")
+                cell.text = templist[row * 4 + col]
+                print(row, col)
+                print(row * 4 + col)
+        document.save(path+'/小学生口算题1.docx')
+        os.startfile(path+"/小学生口算题1.docx")
+
 
 # if __name__ == '__main__':
 #     output()

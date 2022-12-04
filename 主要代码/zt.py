@@ -23,7 +23,7 @@ def ImportPage():
         exercisePage(exercises_list)
 
 
-def ExportPage(exercises_list: list, errors_list: list = None):
+def ExportPage(exercises_list: list, errors_list: list = []):
     layout = [[sg.Input(), sg.FolderBrowse("选择文件夹")],
               [sg.Button("导出习题"), sg.Button("导出错题")]]
     window = sg.Window('window', layout)
@@ -38,12 +38,14 @@ def ExportPage(exercises_list: list, errors_list: list = None):
                 sg.Popup("当前无错题", any_key_closes=True)
                 pass
             else:
+                op.Operation.output(len(exercises_list), exercises_list, values[0])
+                sg.Popup("导出完成", any_key_closes=True)
                 break
             window.close()
 
         elif event == "导出习题":
             window.close()
-            op.Operation.output(len(exercises_list) / 4, exercises_list, values[0])
+            op.Operation.output(len(exercises_list), exercises_list, values[0])
             sg.Popup("导出完成", any_key_closes=True)
             print(exercises_list)
 
