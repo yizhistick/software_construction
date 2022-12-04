@@ -1,6 +1,6 @@
 import os
 import random
-import Current_variate as CV
+import Tool.Current_variate as CV
 from 数据库.Exercise_Data import *
 from docx import Document
 from docx.shared import Pt
@@ -17,7 +17,7 @@ class Operation:
         elif grade == 4:
             operators = '＋－×÷'
             Max = 100
-        elif grade == 5:
+        elif grade == 5 or grade == 6:
             operators = '＋－×÷('
             Max = 100
 
@@ -45,7 +45,7 @@ class Operation:
                         if second < third:
                             second, third = third, second
                     r = str(first).ljust(2, ' ') + o1 + '(' + str(second).ljust(2, ' ') + o2 + str(third).ljust(2,
-                                                                                                                ' ')
+                                                                                                                ' ')+')'
                 else:
                     if o1 == '-':
                         if first < second:

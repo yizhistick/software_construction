@@ -1,6 +1,8 @@
 from wjc import *
 from zt import *
 import Tool.Operation as op
+import Tool.Current_variate as CV
+import 数据库.Exercise_Data as ED
 
 sg.theme('DarkAmber')
 
@@ -16,20 +18,29 @@ def MainPage():
               [sg.Button('导出题目', size=20)],
               [sg.Button('练习', ), sg.Button('退出')]]
 
-    window = sg.Window('windows', layout, element_justification="center")
+    window = sg.Window('小学生口算习题', layout, element_justification="center")
     while True:
         event, values = window.read()
         if event == sg.WIN_CLOSED or event == '退出':
             break
         elif event == '限时练习':
+            window.disappear()
             exercisePage(op.Operation.Create(values[0], values[1]))
+            window.reappear()
             pass
-        elif event == '易错题':
+        elif event == '易错题练习':
+            window.disappear()
+            exercisePage(ED.GetAllWrong(CV.Current_Account))
+            window.reappear()
             pass
         elif event == '导入题目':
+            window.disappear()
             ImportPage()
+            window.reappear()
         elif event == '导出题目':
+            window.disappear()
             ExportPage(op.Operation.Create(values[0], values[1]), errors_list=[])
+            window.reappear()
             pass
         elif event == '开始随机生成题目':
             pass

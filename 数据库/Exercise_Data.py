@@ -1,4 +1,4 @@
-from Base_Data import *
+from 数据库.Base_Data import *
 
 
 def IfExist(account=str, problem=str):
@@ -13,7 +13,7 @@ def IfExist(account=str, problem=str):
         return False
 
 
-def Deposit(problem:str, answer:str, account:str):
+def Deposit(problem: str, answer: str, account: str):
     # 判断是否已经存在,存在的话就不存入
     if IfExist(account, problem):
         pass
@@ -28,9 +28,18 @@ def Deposit(problem:str, answer:str, account:str):
 
 
 def GetAllWrong(account=str):
-    pass
+    question_list = []
+    get_sql = f"SELECT PROBLEM from Mistaken_Exercise where Account='{account}'"
+    c, conn = ConnData()
+    cursor = conn.execute(get_sql)
+    for row in cursor:
+        question_list.append(row[0])
+    conn.close()
+    return question_list
 
 
 if __name__ == '__main__':
-    Deposit(problem="5+2", answer="7", account="2360784351")
+    # Deposit("3*2","6","2360784351")
+    # a = GetAllWrong("2360784351")
+    # print(a)
     pass

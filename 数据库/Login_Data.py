@@ -1,4 +1,3 @@
-import sqlite3
 import PySimpleGUI as sg
 from 数据库.Base_Data import ConnData
 

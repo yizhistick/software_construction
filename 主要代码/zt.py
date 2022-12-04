@@ -1,8 +1,6 @@
 import PySimpleGUI as sg
-from docx import Document
 import Tool.Operation as op
 import docx
-from 数据库 import *
 
 
 # 导入习题

@@ -1,9 +1,5 @@
-import random
-
-import PySimpleGUI as sg
-from 数据库 import *
 from Main import *
-from 数据库.Login_Data import Login_affair
+from 数据库.Login_Data import Login_affair,register_affair
 import Tool.Current_variate as Share
 
 def LoginPage():
@@ -13,7 +9,7 @@ def LoginPage():
               [sg.Button('登录')],
               [sg.Button('注册')],
               ]
-    window = sg.Window('windows', layout, element_justification="center")
+    window = sg.Window('登录与注册', layout, element_justification="center")
     while True:
         event, values = window.read()
         if event == sg.WIN_CLOSED:
@@ -56,7 +52,7 @@ def registerPage():
             password = values[1]
             password_ok = values[2]
             print(account, password, password_ok)
-            Data.register_affair(account, password, password_ok)
+            register_affair(account, password, password_ok)
 
 
 def mistakesPage():
@@ -65,6 +61,3 @@ def mistakesPage():
 
 
 
-
-if __name__ == '__main__':
-    pass
