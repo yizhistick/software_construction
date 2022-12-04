@@ -45,7 +45,7 @@ class Operation:
                         if second < third:
                             second, third = third, second
                     r = str(first).ljust(2, ' ') + o1 + '(' + str(second).ljust(2, ' ') + o2 + str(third).ljust(2,
-                                                                                                                ' ')+')'
+                                                                                                                ' ') + ')'
                 else:
                     if o1 == '-':
                         if first < second:
@@ -64,13 +64,13 @@ class Operation:
                 Exercises[question] = True
         return Exercises
 
-    def output(rowsNumbers: int, templist: list, path: str):
+    def output(rowsNumbers: int, templist: list, path: str, name: str = ""):
         columnsNumber = 4
         document = Document()
-        if rowsNumbers/4 != int(rowsNumbers/4):
-            rowsNumbers = int(rowsNumbers/4) + 1
+        if rowsNumbers / 4 != int(rowsNumbers / 4):
+            rowsNumbers = int(rowsNumbers / 4) + 1
         else:
-            rowsNumbers = int(rowsNumbers/4)
+            rowsNumbers = int(rowsNumbers / 4)
         table = document.add_table(rows=rowsNumbers, cols=columnsNumber)
         table.style.font.name = '微软雅黑'
         table.style.font.size = Pt(10)
@@ -82,9 +82,8 @@ class Operation:
                 cell.text = templist[row * 4 + col]
                 print(row, col)
                 print(row * 4 + col)
-        document.save(path+'/小学生口算题1.docx')
-        os.startfile(path+"/小学生口算题1.docx")
-
+        document.save(path + '/' + name + '口算题.docx')
+        os.startfile(path + "/" + name + "口算题.docx")
 
 # if __name__ == '__main__':
 #     output()
