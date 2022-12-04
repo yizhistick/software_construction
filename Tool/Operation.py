@@ -1,6 +1,7 @@
 import os
 import random
-
+import Current_variate as CV
+from 数据库.Exercise_Data import *
 from docx import Document
 from docx.shared import Pt
 
@@ -58,6 +59,7 @@ class Operation:
         for question, user_answer in Exercises.items():
             if str(eval(question)) != user_answer:
                 Exercises[question] = False
+                Deposit(problem=question, answer=str(eval(question)), account=CV.Current_Account)
             else:
                 Exercises[question] = True
         return Exercises
