@@ -1,4 +1,8 @@
+import os
 import random
+
+from docx import Document
+from docx.shared import Pt
 
 
 class Operation:
@@ -51,9 +55,25 @@ class Operation:
         return Exercises
 
     def correct(Exercises: dict):
-        for question, user_answer in dict.items():
-            if eval(question) != user_answer:
+        for question, user_answer in Exercises.items():
+            if str(eval(question)) != user_answer:
                 Exercises[question] = False
             else:
                 Exercises[question] = True
         return Exercises
+
+    def output(rowsNumbers: int, templist: list, path: str):
+        columnsNumber = 4
+        document = Document()
+        table = document.add_table(rows=rowsNumbers, cols=columnsNumber)
+        table.style.font.name = '微软雅黑'
+        table.style.font.size = Pt(10)
+        for row in range(rowsNumbers):
+            for col in range(columnsNumber):
+                cell = table.cell(row, col)
+                cell.text = templist
+        document.save(path + '/小学生口算题.docx')
+        os.startfile(path + "/小学生口算题.docx")
+
+# if __name__ == '__main__':
+#     output()

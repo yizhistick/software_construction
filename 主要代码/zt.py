@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+from docx import Document
 import Tool.Operation as op
 import docx
 from 数据库 import *
@@ -22,20 +23,29 @@ def ImportPage():
         exercisePage(exercises_list)
 
 
-def ExportPage(exercises_list: list, errors_list: list):
+def ExportPage(exercises_list: list, errors_list: list = None):
     layout = [[sg.Input(), sg.FolderBrowse("选择文件夹")],
               [sg.Button("导出习题"), sg.Button("导出错题")]]
     window = sg.Window('window', layout)
-    event, values = window.read()
-    if event == "导出错题":
-        if len(exercises_list) == 0:
-            sg.Popup("当前无错题", title='test', custom_text=('确定', '取消'))
-        op.Operation.Create()
-        window.close()
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED or event == '退出':
+            break
+        elif event == "导出错题":
+            if len(errors_list) == 0:
+                print("无错题")
+                # sg.Popup("当前无错题", title='test', custom_text=('确定', '取消'),font=("黑体",20))
+                sg.Popup("当前无错题", any_key_closes=True)
+                pass
+            else:
+                break
+            window.close()
 
-    if event == "导出当前习题":
-        op.Operation.Create()
-        window.close()
+        elif event == "导出习题":
+            window.close()
+            op.Operation.output(len(exercises_list) / 4, exercises_list, values[0])
+            sg.Popup("导出完成", any_key_closes=True)
+            print(exercises_list)
 
 
 def time_limitPage(list: list):
@@ -59,11 +69,15 @@ def exercisePage(exercises_list: list):
         if event == sg.WIN_CLOSED or event == 'Cancel':
             break
         if event == '提交':
-            exercises_dic = {}
+            exercises_dict = {}
             result = list(values.values())
             for i in range(len(result)):
-                exercises_dic[exercises_list[i]] = result[i]
-            exercises_dic1 = op.Operation.Correct(exercises_dic)
+                exercises_dict[exercises_list[i]] = result[i]
+            exercises_dict1 = exercises_dict
+            exercises_dict1 = op.Operation.correct(exercises_dict1)
+            print(exercises_dict1)
+            print(exercises_dict)
+
         if event == '导出':
             window.close()
-            ExportPage(exercises_list, [])
+            ExportPage(exercises_list, errors_list=[])
