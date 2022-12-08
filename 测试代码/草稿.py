@@ -1,11 +1,12 @@
-import os
-from random import random
+# import os
+# from datetime import time
+# from random import random
+#
+# import PySimpleGUI as sg
+# from docx import Document
+# import docx
 
-import PySimpleGUI as sg
-from docx import Document
-import docx
-
-sg.theme('DarkAmber')
+# sg.theme('DarkAmber')
 #
 #
 # def MainPage():
@@ -109,14 +110,131 @@ sg.theme('DarkAmber')
 #
 
 
+#
 
+
+# import time
+# import PySimpleGUI as sg
+# import threading
+#
+#
+# # 定义计时器线程函数
+# def timer_thread(time_seconds, window):
+#     # 初始化计时器
+#     timer = time_seconds
+#
+#     # 不断更新计时器显示
+#     while timer > 0:
+#         window["timer"].update(timer)
+#         timer -= 1
+#         time.sleep(1)
+#
+#     # 计时完毕，显示结束信息
+#     window["timer"].update("计时完毕！")
+#
+#
+# # 创建 PySimpleGUI 窗口
+# layout = [[sg.Text("计时器：")],
+#           [sg.Input("", key="time"), sg.Button("开始计时")],
+#           [sg.Text("", size=(10, 1), key="timer")]]
+# window = sg.Window("计时器", layout)
+#
+# # 循环等待用户事件
+# while True:
+#     event, values = window.read()
+#     # 如果用户点击了按钮
+#     if event == "开始计时":
+#         # 获取计时时长
+#         time_seconds = int(values["time"])
+#         # 创建并启动计时器线程
+#         t = threading.Thread(target=timer_thread, args=(time_seconds, window))
+#         t.start()
+#     # 如果用户关闭窗口，退出循环
+#     if event == sg.WIN_CLOSED:
+#         break
+#
+# # 关闭窗口
+# window.close()
+import time
+
+import PySimpleGUI as sg
+import threading
+
+
+#
+#
+# #定义计时函数
+# def countdown(timer,window):
+#     for i in range(timer):
+#         # 使用进度条显示计时进度
+#         window.write_event_value('-THREAD-', (
+#             threading.current_thread().name, i))
+#         sg.one_line_progress_meter('计时器', i, timer)
+#         # timer -= 1
+#         time.sleep(1)
+#
+# def prograss(window):
+#     window.read()
+#     for i in range(10000):
+#         event1, values1 = window.read(timeout=10)
+#         if event1 == 'Cancel':
+#             break
+#         window['prograssbar'].UpdateBar(i + 1)
+#     window.close()
+#     # exitflag = False
+#     pass
+#
+#
+# # 定义窗口布局
+# layout = [
+#     [sg.ProgressBar(max_value=10000, orientation='h', size=(50, 20), key='prograssbar')],
+#     [sg.Button('开始计时'), sg.Button('停止计时')]
+# ]
+#
+#
+# # 创建窗口
+# window = sg.Window('多线程计时器', layout)
+#
+# # 主线程循环
+# while True:
+#     event, values = window.read()
+#     # 如果点击了开始计时按钮
+#     if event == '开始计时':
+#         # 获取用户输入的计时时长
+#
+#         # 创建一个新的线程来执行计时任务
+#
+#         t = threading.Thread(target=prograss, args=(window,))
+#         # 开始执行线程
+#
+#         t.start()
+#
+#     # 如果点击了停止计时按钮
+#     if event == '停止计时':
+#         # 终止线程
+#         t.stop()
+#     # 如果窗口关闭
+#     if event is None:
+#         # 退出循环
+#         break
+#
+# window.close()
+
+def prograss1(time):
+    layout = [[sg.Button("提交")],
+              [sg.Text("做题倒计时")],
+              [sg.ProgressBar(max_value=time, orientation='h', size=(50, 20), key='prograssbar')],
+              [sg.Input()],
+              [sg.Cancel()]]
+    window = sg.Window("prograss", layout)
+    for i in range(time):
+        event, values = window.read(timeout=10)
+        if event == 'Cancel' or event == sg.WIN_CLOSED or event == "提交":
+            break
+        window['prograssbar'].UpdateBar(i + 1)
+    sg.popup("已经自动提交")
+    window.close()
 
 
 if __name__ == '__main__':
-    LoginPage()
-    Operation.create()
-
-
-
-
-
+    prograss1(1000)

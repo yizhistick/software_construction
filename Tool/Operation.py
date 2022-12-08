@@ -85,5 +85,6 @@ class Operation:
         document.save(path + '/' + name + '口算题.docx')
         os.startfile(path + "/" + name + "口算题.docx")
 
+
 # if __name__ == '__main__':
 #     output()
