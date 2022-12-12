@@ -14,12 +14,13 @@ def ImportPage():
     if event == "开始导入":
         window.close()
         print(values[0])
-        file = docx.Document(values[0])
-        exercises_list = []
-        for table in file.tables:
-            for row in table.rows:
-                for cell in row.cells:
-                    exercises_list.append(cell.text)
+        # file = docx.Document(values[0])
+        # exercises_list = []
+        # for table in file.tables:
+        #     for row in table.rows:
+        #         for cell in row.cells:
+        #             exercises_list.append(cell.text)
+        exercises_list = op.input(values[0])
         exercisePage(exercises_list)
 
 
