@@ -1,6 +1,7 @@
 from Main import *
-from 数据库.Login_Data import Login_affair,register_affair
+from 数据库.Login_Data import Login_affair, register_affair
 import Tool.Current_variate as Share
+
 
 def LoginPage():
     layout = [[sg.Text('小学生口算题')],
@@ -57,7 +58,3 @@ def registerPage():
 
 def mistakesPage():
     layout = []
-
-
-
-
