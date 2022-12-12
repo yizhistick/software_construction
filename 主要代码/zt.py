@@ -39,15 +39,15 @@ def ExportPage(exercises_list: list, errors_list: list = []):
                 sg.Popup("当前无错题", any_key_closes=True)
                 pass
             else:
-                op.Operation.output(len(exercises_list), exercises_list, values[0],
-                                    name=Tool.Current_variate.Current_Account + "易错")
+                op.output(len(exercises_list), exercises_list, values[0],
+                          name=Tool.Current_variate.Current_Account + "易错")
                 sg.Popup("导出完成", any_key_closes=True)
             window.close()
 
         elif event == "导出习题":
             window.close()
-            op.Operation.output(len(exercises_list), exercises_list, values[0],
-                                name=Tool.Current_variate.Current_Account + "练习")
+            op.output(len(exercises_list), exercises_list, values[0],
+                      name=Tool.Current_variate.Current_Account + "练习")
             sg.Popup("导出完成", any_key_closes=True)
             print(exercises_list)
 
@@ -60,7 +60,7 @@ def time_limitPage(exercises_list: list, time: int = 1000):
         for i in range(len(result)):
             exercises_dict[exercises_list[i]] = result[i]
         exercises_dict1 = exercises_dict
-        exercises_dict1 = op.Operation.correct(exercises_dict1)
+        exercises_dict1 = op.correct(exercises_dict1)
         window.disappear()
         submitPage(exercises_dict1)
         window.close()
@@ -105,10 +105,17 @@ def time_limitPage(exercises_list: list, time: int = 1000):
 
 # 练习习题
 def exercisePage(exercises_list: list):
-    list_box = [
-        [sg.Text(exercises_list[i], size=(13, 0)), sg.Input(size=(10, 200)),
-         sg.Text(exercises_list[i + 1], size=(13, 0)), sg.Input(size=(10, 200))
-         ] for i in range(0, len(exercises_list), 2)]
+    # list_box = [
+    #     [sg.Text(exercises_list[i], size=(13, 0)), sg.Input(size=(10, 200)),
+    #      sg.Text(exercises_list[i + 1], size=(13, 0)), sg.Input(size=(10, 200))
+    #      ] for i in range(0, len(exercises_list), 2)]
+    list_box = []
+    for i in range(0, len(exercises_list) - len(exercises_list) % 2, 2):
+        list_box.append([sg.Text(exercises_list[i], size=(13, 0)), sg.Input(size=(10, 200)),
+                         sg.Text(exercises_list[i + 1], size=(13, 0)), sg.Input(size=(10, 200))])
+    if len(exercises_list) % 2 != 0:
+        for i in range((len(exercises_list) % 2), 0, -1):
+            list_box.append([sg.Text(exercises_list[-i], size=(13, 0)), sg.Input(size=(10, 200))])
 
     layout = [[sg.Column(list_box, size=(500, 600), scrollable=True,
                          vertical_scroll_only=True, key='test')],
@@ -127,7 +134,7 @@ def exercisePage(exercises_list: list):
                 for i in range(len(result)):
                     exercises_dict[exercises_list[i]] = result[i]
                 exercises_dict1 = exercises_dict
-                exercises_dict1 = op.Operation.correct(exercises_dict1)
+                exercises_dict1 = op.correct(exercises_dict1)
                 window.disappear()
                 submitPage(exercises_dict1)
                 window.close()
@@ -169,12 +176,18 @@ def submitPage(exercises_dict1: dict):
         list_box.append(temp)
 
     layout = [[sg.Text("你的正确率为" + str(x) + "%")],
+              [sg.Canvas(key='-CANVAS-', size=(300, 300))],
               [sg.Text("    错  题  如  下    ")],
-              [sg.Column(list_box, size=(500, 600), scrollable=True,
+              [sg.Column(list_box, size=(500, 500), scrollable=True,
                          vertical_scroll_only=True, key='test')],
+
               [sg.Button("返回菜单"), sg.Button("导出")]]
 
-    window = sg.Window('window', layout, element_justification="center")
+    window = sg.Window('window', layout, finalize=True, element_justification='center')
+    # 调用绘图函数
+    fig = op.make_figure(count, (len(list(exercises_dict1.values())) - count))
+    fig_canvas_agg = op.draw_figure(window['-CANVAS-'].TKCanvas, fig)
+
     while True:
         event, values = window.read()
         if event == sg.WIN_CLOSED or event == 'Cancel':
@@ -189,14 +202,16 @@ def submitPage(exercises_dict1: dict):
             ExportPage(list(exercises_dict1.keys()), errors_list=false.keys())
             window.close()
 
-# if __name__ == '__main__':
-#     liat = []
-#     dic = {'16 -2 ': True, '10 -1 ': True, '18 -13': False, '14 +9 ': True, '18 +15': True, '19 +6 ': False,
-#            '6  +6 ': False, '8  -4 ': False, '20 +3 ': False, '14 -5 ': False, '16 -13': False, '18 -6 ': False,
-#            '17 +11': False, '5  -1 ': False, '7  +1 ': False, '11 +1 ': False, '16 +15': False, '13 +6 ': False,
-#            '13 +11': False, '18 +6 ': False, '20 -3 ': False, '20 +13': False, '17 +1 ': False, '17 -11': False,
-#            '6  -3 ': False, '5  -2 ': False, '13 -2 ': False, '19 +12': False, '20 -7 ': False, '19 -17': False,
-#            '16 -5 ': False, '11 -6 ': False, '13 -6 ': False, '4  +3 ': False, '12 +6 ': False, '15 -10': False,}
-#     diclist = list(dic.keys())
-#     print(diclist)
-#     time_limitPage(diclist)
+
+if __name__ == '__main__':
+    liat = []
+    dic = {'16 -2 ': True, '10 -1 ': True, '18 -13': False, '14 +9 ': True, '18 +15': True, '19 +6 ': False,
+           '6  +6 ': False, '8  -4 ': False, '20 +3 ': False, '14 -5 ': False, '16 -13': False, '18 -6 ': False,
+           '17 +11': False, '5  -1 ': False, '7  +1 ': False, '11 +1 ': False, '16 +15': False, '13 +6 ': False,
+           '13 +11': False, '18 +6 ': False, '20 -3 ': False, '20 +13': False, '17 +1 ': False, '17 -11': False,
+           '6  -3 ': False, '5  -2 ': False, '13 -2 ': False, '19 +12': False, '20 -7 ': False, '19 -17': False,
+           '16 -5 ': False, '11 -6 ': False, '13 -6 ': False, '4  +3 ': False, '12 +6 ': False, '15 -10': False, }
+    # diclist = list(dic.keys())
+    # print(diclist)
+    # time_limitPage(diclist)
+    submitPage(dic)

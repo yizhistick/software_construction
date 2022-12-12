@@ -26,7 +26,7 @@ def MainPage():
             break
         elif event == '限时练习':
             window.disappear()
-            time_limitPage(op.Operation.Create(values[0], values[1]), time=values[2]*60)
+            time_limitPage(op.Create(values[0], values[1]), time=values[2]*60)
             window.reappear()
             pass
         elif event == '易错题练习':
@@ -40,12 +40,12 @@ def MainPage():
             window.reappear()
         elif event == '导出题目':
             window.disappear()
-            ExportPage(op.Operation.Create(values[0], values[1]), errors_list=[])
+            ExportPage(op.Create(values[0], values[1]), errors_list=[])
             window.reappear()
             pass
         elif event == '练习':
             window.disappear()
-            exercisePage(op.Operation.Create(values[0], values[1]))
+            exercisePage(op.Create(values[0], values[1]))
             window.reappear()
             pass
         print('you entered', values)

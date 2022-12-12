@@ -160,7 +160,6 @@ import time
 import PySimpleGUI as sg
 import threading
 
-
 #
 #
 # #定义计时函数
@@ -220,21 +219,69 @@ import threading
 #
 # window.close()
 
-def prograss1(time):
-    layout = [[sg.Button("提交")],
-              [sg.Text("做题倒计时")],
-              [sg.ProgressBar(max_value=time, orientation='h', size=(50, 20), key='prograssbar')],
-              [sg.Input()],
-              [sg.Cancel()]]
-    window = sg.Window("prograss", layout)
-    for i in range(time):
-        event, values = window.read(timeout=10)
-        if event == 'Cancel' or event == sg.WIN_CLOSED or event == "提交":
-            break
-        window['prograssbar'].UpdateBar(i + 1)
-    sg.popup("已经自动提交")
-    window.close()
+# def prograss1(time):
+#     layout = [[sg.Button("提交")],
+#               [sg.Text("做题倒计时")],
+#               [sg.ProgressBar(max_value=time, orientation='h', size=(50, 20), key='prograssbar')],
+#               [sg.Input()],
+#               [sg.Cancel()]]
+#     window = sg.Window("prograss", layout)
+#     for i in range(time):
+#         event, values = window.read(timeout=10)
+#         if event == 'Cancel' or event == sg.WIN_CLOSED or event == "提交":
+#             break
+#         window['prograssbar'].UpdateBar(i + 1)
+#     sg.popup("已经自动提交")
+#     window.close()
+#
+#
+# if __name__ == '__main__':
+#     prograss1(1000)
 
 
-if __name__ == '__main__':
-    prograss1(1000)
+from matplotlib.ticker import NullFormatter  # useful for `logit` scale
+import numpy as np
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+import PySimpleGUI as sg
+import matplotlib.pyplot as plt
+
+
+# 生成一个fig
+def make_figure():
+    fig = plt.figure(facecolor="lightgray")
+    plt.pie([10, 20], labels=["正确题数", "错误题数"], autopct='%.2f%%')
+    plt.legend(["正确", "错误"], loc="center left", bbox_to_anchor=(0.90, 0, 0.3, 1))
+    plt.title(u"matplot 测试")
+
+    # 用来正常显示中文标签
+    plt.rcParams['font.sans-serif'] = ['SimHei']
+    # 用来正常显示负号
+    plt.rcParams['axes.unicode_minus'] = False
+    return fig
+
+
+# 画在canvas上，包括工具条
+def draw_figure(canvas, canvas_toolbar, figure):
+    figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
+    figure_canvas_agg.draw()
+    toolbar = NavigationToolbar2Tk(figure_canvas_agg, canvas_toolbar)
+    toolbar.update()
+    figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
+    return figure_canvas_agg
+
+
+# 布局
+layout = [[sg.Canvas(key='-TOOLBAR-', size=(500, 500))],
+          [sg.Canvas(key='-CANVAS-', size=(500, 500))],
+          [sg.Button('Ok')]]
+
+window = sg.Window('Demo Application - Embedding Matplotlib In PySimpleGUI',
+                   layout, finalize=True, element_justification='center',
+                   font='Helvetica 18')
+# 调用绘图函数
+fig = make_figure()
+fig_canvas_agg = draw_figure(window['-CANVAS-'].TKCanvas, window['-TOOLBAR-'].TKCanvas, fig)
+# 等待界面输入
+event, values = window.read()
+# 关闭窗体
+window.close()
