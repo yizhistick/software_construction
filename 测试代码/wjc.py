@@ -1,35 +1,23 @@
+import threading
 import PySimpleGUI as sg
 
-
-import _thread
-import time
-
-# 为线程定义一个函数
-def print_time( threadName, delay):
-   count = 0
-   while count < 5:
-      time.sleep(delay)
-      count += 1
-      print ("%s: %s" % ( threadName, time.ctime(time.time()) ))
+sg.theme('DarkAmber')
 
 
-def prograss():
+def prograss(time):
+    layout = [[sg.Button("提交")],
+               [sg.Text("做题倒计时")],
+               [sg.ProgressBar(max_value=1000, orientation='h', size=(50, 20), key='prograssbar')],
+               [sg.Cancel()]]
+    window = sg.Window("prograss", layout)
     for i in range(1000):
-        sg.one_line_progress_meter(
-            '做题倒计时',
-            i + 1,
-            1000,
-            '进度条走完就要自动交题啦',
-            orientation='h',
-            no_button=True
-        )
-    exit()
-# 创建两个线程
-try:
-   _thread.start_new_thread( print_time, ("Thread-1", 2, ) )
-   _thread.start_new_thread( prograss())
-except:
-   print ("Error: 无法启动线程")
+        event, values = window.read(timeout=time)
+        if event == 'Cancel' or event == sg.WIN_CLOSED or event == "提交":
+            break
+        window['prograssbar'].UpdateBar(i + 1)
+    sg.popup("已经自动提交")
+    window.close()
 
-while 1:
-   pass
+
+if __name__ == '__main__':
+    prograss(10)

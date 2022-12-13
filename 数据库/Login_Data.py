@@ -5,7 +5,7 @@ from 数据库.Base_Data import ConnData
 # 判断是否存在对应用户
 def IfExist(account=str):
     c, conn = ConnData()
-    cusor = conn.execute(f"SELECT account, Password from Users where account={account}")
+    cusor = conn.execute("SELECT account, Password from Users where account=?",(account,))
     if len(list(cusor)) == 1:
         return True
     else:
@@ -26,7 +26,7 @@ def register_affair(account=str, password=str, password_ok=str):
         sg.popup_error("此账号已经有人注册!")
     else:
         c.execute(f"INSERT INTO Users (ACCOUNT,PASSWORD) \
-              VALUES ({account},{password})")
+              VALUES (?,?)",(account,password))
         sg.popup("注册成功！")
         conn.commit()
     # 断开连接
@@ -40,9 +40,8 @@ def Login_affair(cin_account=str, cin_password=str):
         sg.popup_error("账号和密码不可以为空")
         return
     if IfExist(cin_account):
-        cusor = conn.execute(f"SELECT account, Password  from Users where account={cin_account}")
+        cusor = conn.execute(f"SELECT account, Password  from Users where account='{cin_account}'")
         password = list(cusor)[0][1]
-        print(password)
         if password == cin_password:
             return True
         else:

@@ -29,9 +29,9 @@ def Deposit(problem: str, answer: str, account: str):
 
 def GetAllWrong(account=str):
     question_list = []
-    get_sql = f"SELECT PROBLEM from Mistaken_Exercise where Account='{account}'"
+    get_sql = "SELECT PROBLEM from Mistaken_Exercise where Account=?"
     c, conn = ConnData()
-    cursor = conn.execute(get_sql)
+    cursor = conn.execute(get_sql, account)
     for row in cursor:
         question_list.append(row[0])
     conn.close()
