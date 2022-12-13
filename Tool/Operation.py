@@ -1,5 +1,7 @@
 import os
 import random
+
+import docx
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib import pyplot as plt
 import Tool.Current_variate as CV
@@ -87,6 +89,16 @@ def output(rowsNumbers: int, templist: list, path: str, name: str = ""):
             print(row * 4 + col)
     document.save(path + '/' + name + '口算题.docx')
     os.startfile(path + "/" + name + "口算题.docx")
+
+
+def input(urlstr: str):
+    file = docx.Document(urlstr)
+    exercises_list = []
+    for table in file.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                exercises_list.append(cell.text)
+    return exercises_list
 
 
 # 生成一个fig
